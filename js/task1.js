@@ -4,8 +4,8 @@
 // промис переходит в resolved через ***мс, которые передали в параметр функции
 
 
-function delay(ms) {
-    const time = new Promise((resolve) => {
+export default function delay(ms) {
+    const time = new Promise(resolve => {
         setTimeout(() => {
             resolve(ms);
         }, ms)
