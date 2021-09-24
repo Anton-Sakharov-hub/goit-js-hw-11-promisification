@@ -13,9 +13,9 @@ const makeTransaction = transaction => {
             const canProcess = Math.random() > 0.3;
 
             if (canProcess) {
-                resolve(transaction.id, delay);
+                resolve({ transaction, delay });
             } else {
-                reject(transaction.id);
+                reject(new Error(`Error processing transaction ${transaction.id}. Please try again later.`));
             }
         }, delay);
     });
@@ -23,15 +23,11 @@ const makeTransaction = transaction => {
     return promise;
 };
 
-const logSuccess = (id, time) => {
-    console.log(`Transaction ${id} processed in ${time}ms`);
+const logSuccess = ({ transaction, delay } = {}) => {
+    console.log(`Transaction ${transaction.id} processed in ${delay}ms`);
 };
 
-const logError = id => {
-    console.warn(`Error processing transaction ${id}. Please try again later.`);
-};
-
-makeTransaction({ id: 70, amount: 150 }).then(logSuccess).catch(logError);
-makeTransaction({ id: 71, amount: 230 }).then(logSuccess).catch(logError);
-makeTransaction({ id: 72, amount: 75 }).then(logSuccess).catch(logError);
-makeTransaction({ id: 73, amount: 100 }).then(logSuccess).catch(logError);
+makeTransaction({ id: 70, amount: 150 }).then(logSuccess).catch(console.warn);
+makeTransaction({ id: 71, amount: 230 }).then(logSuccess).catch(console.warn);
+makeTransaction({ id: 72, amount: 75 }).then(logSuccess).catch(console.warn);
+makeTransaction({ id: 73, amount: 100 }).then(logSuccess).catch(console.warn);
